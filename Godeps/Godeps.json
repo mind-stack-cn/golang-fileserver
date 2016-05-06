@@ -1,0 +1,22 @@
+{
+	"ImportPath": "github.com/mind-stack-cn/golang-fileserver",
+	"GoVersion": "go1.6",
+	"Deps": [
+		{
+			"ImportPath": "github.com/disintegration/imaging",
+			"Rev": "546cb3c5137b3f1232e123a26aa033aade6b3066"
+		},
+		{
+			"ImportPath": "github.com/satori/go.uuid",
+			"Rev": "d41af8bb6a7704f00bc3b7cba9355ae6a5a80048"
+		},
+		{
+			"ImportPath": "golang.org/x/image/bmp",
+			"Rev": "baddd3465a05d84a6d8d3507547a91cb188c81ea"
+		},
+		{
+			"ImportPath": "golang.org/x/image/tiff",
+			"Rev": "baddd3465a05d84a6d8d3507547a91cb188c81ea"
+		}
+	]
+}
