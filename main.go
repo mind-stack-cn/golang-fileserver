@@ -84,7 +84,7 @@ func handleReq(w http.ResponseWriter, r *http.Request) {
 
 	log.Print("Request: ", r.RequestURI)
 	// See bug #9. For some reason, don't arrive index.html, when asked it..
-	if r.URL.Path != "/" && strings.HasSuffix(r.URL.Path, "/") && r.FormValue("get_file") != "true" {
+	if r.URL.Path != "/" && r.URL.Path != "/test/" && strings.HasSuffix(r.URL.Path, "/") && r.FormValue("get_file") != "true" {
 		log.Printf("Index dir %s", r.URL.Path)
 		http.Error(w, "BadRequest", http.StatusBadRequest)
 	} else {
