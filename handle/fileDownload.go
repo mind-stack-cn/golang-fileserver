@@ -33,6 +33,9 @@ func FileDownload(dir string, w http.ResponseWriter, r *http.Request) {
 		if strings.Compare(urlPath, "/test") == 0 {
 			urlPath = urlPath + "/index.html"
 		}
+		if strings.Compare(urlPath, "/test/") == 0 {
+			urlPath = urlPath + "index.html"
+		}
 		// Redirect test dir
 		dir, _ = filepath.Abs(".")
 		dir = dir + "/"

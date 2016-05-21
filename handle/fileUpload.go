@@ -19,6 +19,23 @@ import (
 	"github.com/satori/go.uuid"
 )
 
+func GenerateNewFilePath(dir string, fileName string)(string, string, string, error)  {
+	randomUUId := uuid.NewV4()
+	paSplit := strings.Split(randomUUId.String(), "-")
+	// File Path
+	relatedFileDir := paSplit[0] + "/" + paSplit[1] + "/" + paSplit[2] + "/" + paSplit[3] + "/"
+	// File Name
+	newFileName := paSplit[4] + filepath.Ext(fileName)
+
+	// Create File Dir if not
+	var fileDir string
+	if dir != "." {
+		fileDir = dir + relatedFileDir
+	}
+	err := os.MkdirAll(fileDir, 0777)
+	return fileDir, relatedFileDir, newFileName, err
+}
+
 // Handler Upload File Request
 // Save It, Return saved file info
 func FileUpload(dir string, w http.ResponseWriter, r *http.Request) {
@@ -37,19 +54,8 @@ func FileUpload(dir string, w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		randomUUId := uuid.NewV4()
-		paSplit := strings.Split(randomUUId.String(), "-")
-		// File Path
-		relatedFileDir := paSplit[0] + "/" + paSplit[1] + "/" + paSplit[2] + "/" + paSplit[3] + "/"
-		// File Name
-		fileName := paSplit[4] + filepath.Ext(part.FileName())
 
-		// Create File Dir if not
-		var fileDir string
-		if dir != "." {
-			fileDir = dir + relatedFileDir
-		}
-		errPath := os.MkdirAll(fileDir, 0777)
+		fileDir, relatedFileDir, fileName, errPath := GenerateNewFilePath(dir, part.FileName())
 		if errPath != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
