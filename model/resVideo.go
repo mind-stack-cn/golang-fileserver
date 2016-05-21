@@ -38,7 +38,7 @@ func (f *ResVideo) AddAttribute() {
 
 // Use Command Line "ffmpeg" to Get media duration
 func GetVideoThumbnail(filePath string, thumbNailPath string) error {
-	cmd:= exec.Command("/bin/sh", "-c", "ffmpeg -i " + filePath + " -ss 00:00:01.000 -vframes 1 " + thumbNailPath)
+	cmd:= exec.Command("/bin/sh", "-c", "ffmpeg -i " + filePath + " -ss 00:00:00.000 -vframes 1 -y " + thumbNailPath)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
