@@ -2,7 +2,7 @@
 #
 # VERSION              1.0 
 
-FROM oceanwu/godepffmpeg
+FROM oceanwu/godepffmpeg:latest
 
 MAINTAINER oceanwu<wuhaiyang1213@gmail.com>
 
