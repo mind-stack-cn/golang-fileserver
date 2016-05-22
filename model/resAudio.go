@@ -19,7 +19,7 @@ type ResAudio struct {
 func (f *ResAudio) AddAttribute(){
 	f.ResFile.AddAttribute()
 	// Get File Duration
-	duration, err := GetMediaDuration(f.Name)
+	duration, err := GetMediaDuration(f.AbsoluteFilePath)
 	if err == nil {
 		f.Duration = duration
 	}

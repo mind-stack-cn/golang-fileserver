@@ -16,7 +16,7 @@ type ResImage struct {
 func (f *ResImage) AddAttribute(){
 	f.ResFile.AddAttribute()
 	// Image, Width & Height
-	width, height, err := GetImageSize(f.Name)
+	width, height, err := GetImageSize(f.AbsoluteFilePath)
 	if err == nil {
 		f.Width = width
 		f.Height = height

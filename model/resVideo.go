@@ -26,10 +26,10 @@ func (f *ResVideo) AddAttribute() {
 	f.ResAudio.AddAttribute()
 
 	// Thumbnail path
-	thumbNailPath := strings.TrimSuffix(f.Name, path.Ext(f.Name)) + thumbExt
+	thumbNailPath := strings.TrimSuffix(f.AbsoluteFilePath, path.Ext(f.AbsoluteFilePath)) + thumbExt
 	thumbNailUri := strings.TrimSuffix(f.Uri, path.Ext(f.Uri)) + thumbExt
 	// Generate default thumbnail
-	if err := GetVideoThumbnail(f.Name, thumbNailPath); err == nil {
+	if err := GetVideoThumbnail(f.AbsoluteFilePath, thumbNailPath); err == nil {
 		f.Thumbnail = ResFileFromFileName(thumbNailPath, thumbNailUri, FileTypeImage)
 	}else{
 		log.Print("GetVideoThumbnail Error: ", err.Error())
@@ -47,7 +47,8 @@ func GetVideoThumbnail(filePath string, thumbNailPath string) error {
 	if err != nil {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return err
+	}else{
+		fmt.Println("Result: " + out.String())
+		return nil
 	}
-	fmt.Println("Result: " + out.String())
-	return nil
 }

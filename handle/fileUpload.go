@@ -19,21 +19,27 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-func GenerateNewFilePath(dir string, fileName string)(string, string, string, error)  {
+// generate new file path and create folder in workDir
+// return absoluteFilePath, relatedFilePath, error
+func GenerateNewFilePath(workDir string, extension string) (string, string, error) {
+	// UUID
 	randomUUId := uuid.NewV4()
+	// Split
 	paSplit := strings.Split(randomUUId.String(), "-")
 	// File Path
 	relatedFileDir := paSplit[0] + "/" + paSplit[1] + "/" + paSplit[2] + "/" + paSplit[3] + "/"
 	// File Name
-	newFileName := paSplit[4] + filepath.Ext(fileName)
+	fileName := paSplit[4] + extension
 
 	// Create File Dir if not
 	var fileDir string
-	if dir != "." {
-		fileDir = dir + relatedFileDir
+	if workDir != "." {
+		fileDir = workDir + relatedFileDir
 	}
+	// Make dir
 	err := os.MkdirAll(fileDir, 0777)
-	return fileDir, relatedFileDir, newFileName, err
+
+	return fileDir + fileName, "/" + relatedFileDir + fileName, err
 }
 
 // Handler Upload File Request
@@ -55,15 +61,14 @@ func FileUpload(dir string, w http.ResponseWriter, r *http.Request) {
 		}
 
 
-		fileDir, relatedFileDir, fileName, errPath := GenerateNewFilePath(dir, part.FileName())
+		absoluteFilePath, relatedFilePath, errPath := GenerateNewFilePath(dir, filepath.Ext(part.FileName()))
 		if errPath != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		// Create File
-		ff := fileDir + fileName
-		dst, err := os.Create(ff)
+		dst, err := os.Create(absoluteFilePath)
 		defer dst.Close()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -77,8 +82,7 @@ func FileUpload(dir string, w http.ResponseWriter, r *http.Request) {
 		log.Print("receive file successfully! fileName:" + part.FileName())
 
 		// append resFile to response Array
-		fileArray = append(fileArray,  model.ResFileFromFileName(dst.Name(), "/" + relatedFileDir + fileName, r.URL.Query().Get("fileType")))
-
+		fileArray = append(fileArray,  model.ResFileFromFileName(dst.Name(), relatedFilePath, r.URL.Query().Get("fileType")))
 		if len(fileArray) >= 10 {
 			// 最多上传10个文件
 			break;

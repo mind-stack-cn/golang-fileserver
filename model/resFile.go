@@ -15,14 +15,14 @@ type ResFileWrapper interface {
 }
 
 type ResFile struct {
-	Name     string `json:"-"`
-	Uri      string `json:"uri"`
-	Size     int64 `json:"size"`
-	FileType string `json:"fileType"`
+	AbsoluteFilePath string `json:"-"`
+	Uri              string `json:"uri"`
+	Size             int64 `json:"size"`
+	FileType         string `json:"fileType"`
 }
 
 func (f *ResFile) AddAttribute() {
-	file, err := os.Open(f.Name)
+	file, err := os.Open(f.AbsoluteFilePath)
 	if err != nil {
 		return
 	}
@@ -34,9 +34,9 @@ func (f *ResFile) AddAttribute() {
 
 
 // Construct ResFile
-func ResFileFromFileName(name string, uri string, fileType string) interface{} {
+func ResFileFromFileName(absoluteFilePath string, uri string, fileType string) interface{} {
 	var res ResFileWrapper
-	resFile := ResFile{Name:name, Uri:uri, FileType:fileType}
+	resFile := ResFile{AbsoluteFilePath:absoluteFilePath, Uri:uri, FileType:fileType}
 
 	switch fileType {
 	case FileTypeImage:
